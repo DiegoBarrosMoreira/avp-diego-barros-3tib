@@ -40,7 +40,7 @@ export default function Register() {
       setPassword("");
     } catch (error) {
       // TODO: mostrar mensagem de erro se o backend retornar erro.
-      const message =
+      const message = 
         error.response?.data?.message || "Erro ao cadastrar usuário";
 
       setError(message);

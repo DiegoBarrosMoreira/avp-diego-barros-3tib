@@ -11,7 +11,28 @@ export default function ProtectedPage() {
 
   function loadProfile() {
     // TODO: pegar o token salvo no localStorage usando getToken.
+    const token = getToken();
+
     // TODO: se não existir token, redirecionar para /login.
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await api.post("/auth/login", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser(response.data);
+    } catch (error) {
+      setError("Erro ao carregar perfil");
+      removeToken();
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
     // TODO: ativar loading.
     // TODO: chamar GET /users/profile usando api.get.
     // TODO: enviar o token no header Authorization no formato Bearer TOKEN.
